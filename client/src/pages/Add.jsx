@@ -7,6 +7,7 @@ function Add() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
     const[error,setError] = useState("");
+    const[load,setLoad] = useState(false);
   const handleLogin = async() => {
     try {
         if(username === "" || password ==="")
@@ -14,14 +15,16 @@ function Add() {
                 setError("please fill in the fields");
                 return;
         }
-        console.log(username);
-        console.log(password);
+        setLoad(true);
         const response = await axios.post("http://127.0.0.1:5000/add",{
                 newusername:username,
                 newuserid:password
         })
         console.log(response.data);
+        setLoad(false);
+        navig('/main-menu');
     } catch (error) {
+      setLoad(false);
         console.log(error);
     }
     
@@ -58,12 +61,19 @@ function Add() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {!load &&
           <button
             onClick={handleLogin}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Sign in
-          </button>
+            Add Student
+          </button>}
+          {load &&
+          <button
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          disabled >
+            Add Student
+          </button>}
         </div>
       </div>
     </div>
